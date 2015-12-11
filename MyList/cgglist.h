@@ -21,7 +21,7 @@ namespace cgg
         {
             return this->head == nullptr;
         }
-
+        
     private:
         struct Node
         {
@@ -41,7 +41,82 @@ namespace cgg
         Node    *head;  // 链表头指针，指向第一个元素
         Node    *tail;  // 链表尾指针，指向最后一个元素
 
+    public:
+        class iterator
+        {
+            friend List<T>; // 把List<T>设为iterator的友元，因为List<T>的begin和end方法要设置iterator的私有成员
+        public:
+            iterator() :pNode(nullptr) {}
+
+            iterator(iterator &other)
+            {
+                this->pNode = other.pNode;
+            }
+
+            iterator& operator=(iterator &other)
+            {
+                this->pNode = other.pNode;
+            }
+            T& operator*()
+            {
+                return *(this->pNode->data);
+            }
+            T* operator->()
+            {
+                return this->pNode->data;
+            }
+            // 前置递增
+            iterator& operator++()
+            {
+                this->pNode = this->pNode->next;
+                return *this;
+            }
+
+            // 后置递增
+            iterator operator++(int)
+            {
+                iterator a = *this;
+                this->pNode = this->pNode->next;
+
+                return a;
+            }
+
+            // 前置递减
+            iterator& operator--()
+            {
+                this->pNode = this->pNode->previ;
+                return *this;
+            }
+
+            // 后置递减
+            iterator operator--(int)
+            {
+                iterator a = *this;
+                this->pNode = this->pNode->previ;
+
+                return a;
+            }
+
+            bool operator==(const iterator &rhs)
+            {
+                return this->pNode == rhs.pNode &&
+                       this->pNode != nullptr;    // nullptr不参与比较
+            }
+
+            bool operator!=(const iterator &rhs)
+            {
+                return this->pNode != rhs.pNode;
+            }
+
+        private:
+            Node    *pNode;
+        };
+
+        iterator begin();   // 返回指向首元素的迭代器
+        iterator end();     // 返回指向尾元素的“下一个元素”的迭代器
+
     };
+
 
     template<typename T>
     List<T>::List():head(nullptr),tail(nullptr)
@@ -154,5 +229,23 @@ namespace cgg
     T& List<T>::back()
     {
         return *(this->tail->data);
+    }
+
+    template<typename T>
+    typename List<T>::iterator List<T>::begin()
+    {
+        iterator a;
+        a.pNode = this->head;
+
+        return a;
+    }
+
+    template<typename T>
+    typename List<T>::iterator List<T>::end()
+    {
+        iterator a;
+        a.pNode = this->tail->next;
+
+        return a;
     }
 }
