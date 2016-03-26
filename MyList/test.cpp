@@ -12,23 +12,21 @@ int main()
     {
         b.push_back(i);
     }
+
+    for (auto p = b.begin(); p != b.end(); ++p)
+    {
+        cout << *p << endl;
+    }
     
-    while (!b.empty())
-    {
-        cout << b.front() << endl;
-        b.pop_front();
-    }
+    List<const char*>s;
+    const char *s1 = "hello", *s2 = "world";
+    s.push_back(s1);
+    s.push_back(s2);
 
-    for (int i = 5; i < 10; i++)
+    for (auto p = s.begin(); p != s.end(); p++)
     {
-        b.push_front(i);
+        cout << *p;
     }
-
-    while (!b.empty())
-    {
-        cout << b.back() << endl;
-        b.pop_front();
-    }
-
+    
     return 0;
 }
